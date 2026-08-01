@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--bg-primary, #000000);
+  --color-foreground: var(--text-primary, #ffffff);
+  --color-accent: var(--accent-color, #ff0055);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-halo: var(--font-halo), cursive;
+  --font-ndot: var(--font-ndot), sans-serif;
+  --font-press-start: "Press Start 2P", system-ui;
+  --font-workbench: "Workbench", sans-serif;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Liquid Glass Frosted Blur Effect */
+.liquid-glass {
+  background: color-mix(in srgb, var(--color-foreground) 6%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 14%, transparent);
+  box-shadow: 
+    inset 1px 1px 1.5px 0 color-mix(in srgb, var(--color-foreground) 28%, transparent),
+    inset -1px -1px 1.5px 0 color-mix(in srgb, var(--color-foreground) 12%, transparent),
+    0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.liquid-glass:hover {
+  background: color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-foreground) 22%, transparent);
+}
+
+/* Custom Ultra-Slim Minimalist Scrollbar Pill */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-foreground) 35%, transparent);
+}
+
+/* Firefox scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-foreground) 15%, transparent) transparent;
+}
+
+/* Utility to hide scrollbars while preserving scrollability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* React Grid Layout Custom Styling */
+.react-grid-layout {
+  position: relative;
+  transition: height 200ms ease;
+}
+
+.react-grid-item {
+  transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-property: left, top, width, height;
+}
+
+.react-grid-item.cssTransforms {
+  transition-property: transform, width, height;
+}
+
+.react-grid-item.resizing {
+  transition: none !important;
+  z-index: 10 !important;
+  will-change: width, height;
+}
+
+.react-grid-item.react-draggable-dragging {
+  transition: none !important;
+  z-index: 50 !important;
+  will-change: transform;
+  cursor: grabbing !important;
+  opacity: 0.95;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
+}
+
+/* Custom Glassmorphic Accent Placeholder */
+.react-grid-item.react-grid-placeholder {
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent) !important;
+  border: 2px dashed var(--color-accent) !important;
+  border-radius: 1.5rem !important;
+  opacity: 0.8 !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 150ms ease-out !important;
+  z-index: 1 !important;
+}
+
+/* Custom Corner Resize Handle */
+.react-grid-item > .react-resizable-handle {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  bottom: 6px;
+  right: 6px;
+  opacity: 0;
+  cursor: se-resize;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 30;
+}
+
+.react-grid-item:hover > .react-resizable-handle,
+.react-grid-item.is-editing > .react-resizable-handle {
+  opacity: 1;
+}
+
+.react-grid-item > .react-resizable-handle::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 10px;
+  height: 10px;
+  border-right: 2.5px solid var(--color-accent);
+  border-bottom: 2.5px solid var(--color-accent);
+  border-bottom-right-radius: 3px;
+  filter: drop-shadow(0 0 4px var(--color-accent));
+}
+
+/* React Colorful Custom Styling */
+.react-colorful {
+  width: 100% !important;
+  height: 180px !important;
+  border-radius: 1.25rem !important;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4);
+}
+.react-colorful__saturation {
+  border-radius: 1.25rem 1.25rem 0 0 !important;
+}
+.react-colorful__hue {
+  border-radius: 0 0 1.25rem 1.25rem !important;
+  height: 22px !important;
+}
+.react-colorful__pointer {
+  width: 22px !important;
+  height: 22px !important;
+  border: 2.5px solid #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+}
+
