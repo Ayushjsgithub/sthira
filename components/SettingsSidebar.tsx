@@ -378,6 +378,7 @@ export const SettingsSidebar = () => {
     widgetOrder, swapWidgets, setWidgetOrder,
     timerScale, setTimerScale,
     quoteScale, setQuoteScale,
+    quoteFont, setQuoteFont,
     showGoalTracker, setShowGoalTracker,
     showTodoPill, setShowTodoPill,
     showMusicButton, setShowMusicButton,
@@ -911,6 +912,45 @@ export const SettingsSidebar = () => {
                   className="flex-1 accent-white h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
                 />
                 <span className="text-[10px] font-mono opacity-50 w-6 text-right">900</span>
+              </div>
+            </div>
+
+            {/* Daily Quote Typography */}
+            <div className="pt-2 border-t border-white/10">
+              <div className="mb-4">
+                <h3 className="text-sm font-semibold opacity-90 mb-1">Quote Typography</h3>
+                <p className="text-[10px] opacity-60">Choose the typeface for your daily quote.</p>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  { id: 'default', label: 'Default', fontClass: 'font-mono font-semibold tracking-tighter' },
+                  { id: 'minimal', label: 'Minimal', fontClass: 'font-sans font-medium tracking-tight' },
+                  { id: 'serif', label: 'Serif', fontClass: 'font-serif font-medium tracking-normal' },
+                  { id: 'handwritten', label: 'Handwritten', fontClass: 'font-halo tracking-wider' },
+                  { id: 'minimal-light', label: 'Minimal Light', fontClass: 'font-sans font-extralight tracking-widest' },
+                  { id: 'serif-condensed', label: 'Serif Condensed', fontClass: 'font-serif font-light tracking-tighter' },
+                  { id: 'press-start', label: '8-Bit Retro', fontClass: 'font-press-start tracking-normal' },
+                  { id: 'workbench', label: 'Workbench', fontClass: 'font-workbench tracking-normal' },
+                  { id: 'ndot', label: 'Ndot', fontClass: 'font-ndot tracking-normal' }
+                ].map((font) => (
+                  <button
+                    key={font.id}
+                    onClick={() => setQuoteFont(font.id as any)}
+                    className={`flex flex-col items-center justify-center p-3 h-20 rounded-2xl border transition-all cursor-pointer ${
+                      quoteFont === font.id 
+                        ? 'border-white bg-white/15 ring-2 ring-white/30 text-white font-bold scale-[1.02]' 
+                        : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white'
+                    }`}
+                  >
+                    <div 
+                      className={`text-[11px] mb-1 leading-tight text-center ${font.fontClass}`}
+                      style={{ zoom: font.id === 'press-start' ? 0.65 : (font.id === 'workbench' ? 0.85 : 1) }}
+                    >
+                      "Focus is power"
+                    </div>
+                    <span className="text-[10px] opacity-70 truncate mt-auto">{font.label}</span>
+                  </button>
+                ))}
               </div>
             </div>
 

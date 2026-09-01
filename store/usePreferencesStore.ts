@@ -134,6 +134,8 @@ export interface PreferencesState {
   setTimerStyle: (style: 'default' | 'flip' | 'progress' | 'gauge' | 'dotMatrix' | 'pie') => void;
   setTimerFont: (font: 'default' | 'minimal' | 'serif' | 'handwritten' | 'minimal-light' | 'serif-condensed' | 'press-start' | 'workbench' | 'ndot') => void;
   setTimerFontWeight: (weight: number) => void;
+  quoteFont: 'default' | 'minimal' | 'serif' | 'handwritten' | 'minimal-light' | 'serif-condensed' | 'press-start' | 'workbench' | 'ndot';
+  setQuoteFont: (font: 'default' | 'minimal' | 'serif' | 'handwritten' | 'minimal-light' | 'serif-condensed' | 'press-start' | 'workbench' | 'ndot') => void;
   setIsEditingLayout: (isEditing: boolean) => void;
   toggleWidget: (widgetId: string) => void;
   setBgDimmer: (dimmer: number) => void;
@@ -167,6 +169,7 @@ export const usePreferencesStore = create<PreferencesState>()(
       timerStyle: 'flip',
       timerFont: 'default',
       timerFontWeight: 0,
+      quoteFont: 'handwritten',
       isEditingLayout: false,
       showGoalTracker: true,
       showTodoPill: true,
@@ -252,6 +255,7 @@ export const usePreferencesStore = create<PreferencesState>()(
       setTimerStyle: (timerStyle) => set({ timerStyle }),
       setTimerFont: (timerFont) => set({ timerFont }),
       setTimerFontWeight: (timerFontWeight) => set({ timerFontWeight }),
+      setQuoteFont: (quoteFont) => set({ quoteFont }),
       setIsEditingLayout: (isEditing) => set({ isEditingLayout: isEditing }),
       toggleWidget: (widgetId) => set((state) => ({
         activeWidgets: state.activeWidgets.includes(widgetId)
