@@ -138,6 +138,12 @@ export interface PreferencesState {
   setQuoteFont: (font: 'default' | 'minimal' | 'serif' | 'handwritten' | 'minimal-light' | 'serif-condensed' | 'press-start' | 'workbench' | 'ndot') => void;
   setIsEditingLayout: (isEditing: boolean) => void;
   toggleWidget: (widgetId: string) => void;
+  clockIs24h: boolean;
+  clockShowDate: boolean;
+  setClockIs24h: (is24h: boolean) => void;
+  setClockShowDate: (showDate: boolean) => void;
+  toggleClockIs24h: () => void;
+  toggleClockShowDate: () => void;
   setBgDimmer: (dimmer: number) => void;
   setBgBlur: (blur: number) => void;
   setYtQuality: (quality: 'auto' | 'highres' | 'hd1440' | 'hd1080' | 'hd720' | 'large' | 'medium') => void;
@@ -171,6 +177,8 @@ export const usePreferencesStore = create<PreferencesState>()(
       timerFontWeight: 0,
       quoteFont: 'handwritten',
       isEditingLayout: false,
+      clockIs24h: false,
+      clockShowDate: true,
       showGoalTracker: true,
       showTodoPill: true,
       showMusicButton: true,
@@ -257,11 +265,36 @@ export const usePreferencesStore = create<PreferencesState>()(
       setTimerFontWeight: (timerFontWeight) => set({ timerFontWeight }),
       setQuoteFont: (quoteFont) => set({ quoteFont }),
       setIsEditingLayout: (isEditing) => set({ isEditingLayout: isEditing }),
-      toggleWidget: (widgetId) => set((state) => ({
-        activeWidgets: state.activeWidgets.includes(widgetId)
+      toggleWidget: (widgetId) => set((state) => {
+        const isCurrentlyActive = state.activeWidgets.includes(widgetId);
+
+        // Activating Clock: Turn off all other widgets so only the clock is displayed
+        if (widgetId === 'clock' && !isCurrentlyActive) {
+          return { activeWidgets: ['clock'] };
+        }
+
+        // Deactivating Clock: If turned off, revert back to default timer setup
+        if (widgetId === 'clock' && isCurrentlyActive) {
+          return { activeWidgets: ['focusBreak', 'timer', 'controls', 'quotes'] };
+        }
+
+        // Activating Timer: Turn off clock and restore standard widgets if empty
+        if (widgetId === 'timer' && !isCurrentlyActive) {
+          const withoutClock = state.activeWidgets.filter(id => id !== 'clock');
+          return { activeWidgets: ['focusBreak', 'timer', 'controls', 'quotes', ...withoutClock.filter(id => !['focusBreak', 'timer', 'controls', 'quotes'].includes(id))] };
+        }
+
+        // General toggle for other widgets
+        const newActive = isCurrentlyActive
           ? state.activeWidgets.filter(id => id !== widgetId)
-          : [...state.activeWidgets, widgetId]
-      })),
+          : [...state.activeWidgets, widgetId];
+
+        return { activeWidgets: newActive };
+      }),
+      setClockIs24h: (clockIs24h) => set({ clockIs24h }),
+      setClockShowDate: (clockShowDate) => set({ clockShowDate }),
+      toggleClockIs24h: () => set((state) => ({ clockIs24h: !state.clockIs24h })),
+      toggleClockShowDate: () => set((state) => ({ clockShowDate: !state.clockShowDate })),
       setBgDimmer: (dimmer) => set((state) => ({
         theme: {
           ...state.theme,
@@ -289,7 +322,7 @@ export const usePreferencesStore = create<PreferencesState>()(
     }),
     {
       name: 'sthira-preferences',
-      version: 3,
+      version: 5,
       partialize: (state) => {
         const bgUrl = state.theme.background?.url;
         if (bgUrl?.startsWith('data:image/') || bgUrl?.startsWith('blob:')) {
@@ -332,6 +365,29 @@ export const usePreferencesStore = create<PreferencesState>()(
             } else {
               order.push('controls');
             }
+          }
+
+          state.activeWidgets = active;
+          state.widgetOrder = order;
+        }
+
+        if (version < 5) {
+          const active: string[] = state.activeWidgets ? [...state.activeWidgets] : [];
+          const timerIdx = active.indexOf('timer');
+          if (timerIdx !== -1) {
+            active[timerIdx] = 'clock';
+          } else if (!active.includes('clock')) {
+            active.push('clock');
+          }
+
+          const order: string[] = state.widgetOrder ? [...state.widgetOrder] : [];
+          const timerOrderIdx = order.indexOf('timer');
+          if (timerOrderIdx !== -1) {
+            order[timerOrderIdx] = 'clock';
+            // push timer back to the end so it's not totally lost
+            if (!order.includes('timer')) order.push('timer');
+          } else if (!order.includes('clock')) {
+            order.push('clock');
           }
 
           state.activeWidgets = active;

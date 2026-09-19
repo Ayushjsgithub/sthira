@@ -24,6 +24,9 @@ export function useKeyboardShortcuts() {
     setShowShortcutsModal,
     showGoalTracker,
     setShowGoalTracker,
+    activeWidgets,
+    toggleWidget,
+    toggleClockIs24h,
   } = usePreferencesStore();
 
   const { togglePlay } = useMusicStore();
@@ -174,6 +177,27 @@ export function useKeyboardShortcuts() {
           }
           break;
 
+        // C: Toggle between Clock and Timer widget
+        case 'KeyC':
+          if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+            e.preventDefault();
+            const hasClock = activeWidgets.includes('clock');
+            if (hasClock) {
+              toggleWidget('timer');
+            } else {
+              toggleWidget('clock');
+            }
+          }
+          break;
+
+        // H: Toggle 12-hour vs 24-hour clock format
+        case 'KeyH':
+          if (!e.metaKey && !e.ctrlKey && !e.altKey) {
+            e.preventDefault();
+            toggleClockIs24h();
+          }
+          break;
+
         // G: Toggle Goal Tracker HUD pill
         case 'KeyG':
           if (!e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -201,6 +225,9 @@ export function useKeyboardShortcuts() {
     setShowShortcutsModal,
     showGoalTracker,
     setShowGoalTracker,
+    activeWidgets,
+    toggleWidget,
+    toggleClockIs24h,
     togglePlay,
   ]);
 }

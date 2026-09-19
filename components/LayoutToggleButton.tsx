@@ -9,6 +9,7 @@ import { CurvedScrollContainer } from "@/components/ui/CurvedScrollContainer";
 const ALL_AVAILABLE_WIDGETS = [
   { id: 'focusBreak', name: 'Focus / Break Switcher', icon: '🔄' },
   { id: 'timer', name: 'Focus Timer', icon: '⏱️' },
+  { id: 'clock', name: 'Real-Time Clock', icon: '🕒' },
   { id: 'controls', name: 'Timer Controls', icon: '⏯️' },
   { id: 'quotes', name: 'Daily Quote', icon: '💬' },
   { id: 'goals', name: 'Pomodoro Goals', icon: '🎯' },
@@ -22,6 +23,8 @@ export const LayoutToggleButton = () => {
     quoteScale, setQuoteScale,
     showGoalTracker, showTodoPill, showMusicButton, showLayoutButton, showFullscreenButton,
     toggleHudButton,
+    clockIs24h, toggleClockIs24h,
+    clockShowDate, toggleClockShowDate,
     activeSidebar, setActiveSidebar,
   } = usePreferencesStore();
 
@@ -238,6 +241,61 @@ export const LayoutToggleButton = () => {
               >
                 +
               </button>
+            </div>
+          </div>
+
+          {/* Real-Time Clock Settings */}
+          <div className="pt-4 border-t border-white/10">
+            <div className="mb-2.5">
+              <label className="text-xs font-semibold uppercase opacity-60 block">Real-Time Clock Options</label>
+              <p className="text-[11px] opacity-40">Customize your full-screen clock display format and subtitle.</p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-transparent hover:border-white/15 transition-colors">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-base">🕒</span>
+                  <div>
+                    <div className="text-sm font-semibold opacity-90">24-Hour Format</div>
+                    <div className="text-[10px] opacity-50">{clockIs24h ? 'Military / 24-hour time' : '12-hour AM/PM time'}</div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={clockIs24h}
+                  onClick={toggleClockIs24h}
+                  className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+                    clockIs24h
+                      ? 'bg-white border-white text-black shadow-sm'
+                      : 'bg-white/5 border-white/20 hover:border-white/40'
+                  }`}
+                >
+                  {clockIs24h && <Check size={12} strokeWidth={3.5} />}
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-transparent hover:border-white/15 transition-colors">
+                <div className="flex items-center gap-2.5">
+                  <span className="text-base">📅</span>
+                  <div>
+                    <div className="text-sm font-semibold opacity-90">Date & Day Subtitle</div>
+                    <div className="text-[10px] opacity-50">Show weekday & date under the clock digits</div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={clockShowDate}
+                  onClick={toggleClockShowDate}
+                  className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all cursor-pointer shrink-0 ${
+                    clockShowDate
+                      ? 'bg-white border-white text-black shadow-sm'
+                      : 'bg-white/5 border-white/20 hover:border-white/40'
+                  }`}
+                >
+                  {clockShowDate && <Check size={12} strokeWidth={3.5} />}
+                </button>
+              </div>
             </div>
           </div>
 

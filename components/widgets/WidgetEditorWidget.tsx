@@ -6,6 +6,7 @@ import { usePreferencesStore } from '@/store/usePreferencesStore';
 
 const ALL_WIDGETS = [
   { id: 'timer', label: 'Focus Timer', icon: '⏱️' },
+  { id: 'clock', label: 'Real-Time Clock', icon: '🕒' },
   { id: 'controls', label: 'Timer Controls', icon: '⏯️' },
   { id: 'quotes', label: 'Daily Quote', icon: '💬' },
   { id: 'focusBreak', label: 'Focus / Break Switcher', icon: '🔄' },

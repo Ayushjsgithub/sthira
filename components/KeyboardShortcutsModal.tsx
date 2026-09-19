@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Command, Sparkles, Play, SkipForward, RotateCcw, Maximize, Edit3, Music, Sliders, Settings, HelpCircle, ArrowUp, ArrowDown } from 'lucide-react';
+import { X, Command, Sparkles, Play, SkipForward, RotateCcw, Maximize, Edit3, Music, Sliders, Settings, HelpCircle, ArrowUp, ArrowDown, Clock } from 'lucide-react';
 import { usePreferencesStore } from '@/store/usePreferencesStore';
 import { CurvedScrollContainer } from '@/components/ui/CurvedScrollContainer';
 
@@ -20,6 +20,8 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
     category: 'Timer Controls',
     items: [
       { key: 'Space', description: 'Start / Pause Timer', icon: <Play size={14} /> },
+      { key: 'C', description: 'Toggle Real-Time Clock / Focus Timer', icon: <Clock size={14} /> },
+      { key: 'H', description: 'Toggle 12-Hour (AM/PM) vs 24-Hour Clock' },
       { key: 'S', description: 'Skip to Next Session (Work / Break)', icon: <SkipForward size={14} /> },
       { key: 'R', description: 'Reset Timer to Initial State', icon: <RotateCcw size={14} /> },
       { key: ['↑', '+'], description: 'Add 1 Minute (+5m with Shift)', icon: <ArrowUp size={14} /> },

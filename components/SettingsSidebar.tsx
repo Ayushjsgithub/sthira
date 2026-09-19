@@ -348,6 +348,7 @@ const sizePresets = [
 const ALL_AVAILABLE_WIDGETS = [
   { id: 'focusBreak', name: 'Focus / Break Switcher', icon: '🔄' },
   { id: 'timer', name: 'Focus Timer', icon: '⏱️' },
+  { id: 'clock', name: 'Real-Time Clock', icon: '🕒' },
   { id: 'controls', name: 'Timer Controls', icon: '⏯️' },
   { id: 'quotes', name: 'Daily Quote', icon: '💬' },
   { id: 'goals', name: 'Pomodoro Goals', icon: '🎯' },
@@ -388,6 +389,7 @@ export const SettingsSidebar = () => {
     resetLayout,
     activeSidebar, setActiveSidebar,
     setShowShortcutsModal,
+    clockIs24h, setClockIs24h,
     setBgDimmer, setBgBlur, setYtQuality
   } = usePreferencesStore();
 
@@ -686,7 +688,7 @@ export const SettingsSidebar = () => {
               <label className="text-xs font-semibold uppercase opacity-60 mb-2 block">Your Name</label>
               <input 
                 type="text"
-                value={userName}
+                value={userName ?? ''}
                 onChange={(e) => setUserName(e.target.value)}
                 className="w-full bg-white/5 border border-white/15 rounded-2xl p-3 text-sm text-white focus:outline-none focus:border-white focus:ring-1 focus:ring-white/20 transition-all"
                 placeholder="Enter your name"
@@ -729,6 +731,8 @@ export const SettingsSidebar = () => {
                 >
                 {[
                   { key: 'Space', desc: 'Start / Pause Timer' },
+                  { key: 'C', desc: 'Toggle Clock / Timer' },
+                  { key: 'H', desc: 'Toggle 12h / 24h Clock' },
                   { key: 'S', desc: 'Skip Current Session' },
                   { key: 'R', desc: 'Reset Timer' },
                   { key: '↑ / ↓', desc: 'Adjust Time ±1m (Shift for ±5m)' },
@@ -959,7 +963,7 @@ export const SettingsSidebar = () => {
                 <label className="text-[10px] font-semibold uppercase opacity-60 mb-2 block">Focus (min)</label>
                 <input 
                   type="number" min="1" max="120"
-                  value={timerDurations.work}
+                  value={timerDurations?.work ?? 25}
                   onChange={(e) => setTimerDurations({ ...timerDurations, work: parseInt(e.target.value) || 25 })}
                   className="w-full bg-white/5 border border-white/15 rounded-2xl p-2.5 text-sm text-white focus:outline-none focus:border-white text-center font-mono"
                 />
@@ -968,7 +972,7 @@ export const SettingsSidebar = () => {
                 <label className="text-[10px] font-semibold uppercase opacity-60 mb-2 block">Short Break</label>
                 <input 
                   type="number" min="1" max="60"
-                  value={timerDurations.shortBreak}
+                  value={timerDurations?.shortBreak ?? 5}
                   onChange={(e) => setTimerDurations({ ...timerDurations, shortBreak: parseInt(e.target.value) || 5 })}
                   className="w-full bg-white/5 border border-white/15 rounded-2xl p-2.5 text-sm text-white focus:outline-none focus:border-white text-center font-mono"
                 />
@@ -977,7 +981,7 @@ export const SettingsSidebar = () => {
                 <label className="text-[10px] font-semibold uppercase opacity-60 mb-2 block">Long Break</label>
                 <input 
                   type="number" min="1" max="60"
-                  value={timerDurations.longBreak}
+                  value={timerDurations?.longBreak ?? 15}
                   onChange={(e) => setTimerDurations({ ...timerDurations, longBreak: parseInt(e.target.value) || 15 })}
                   className="w-full bg-white/5 border border-white/15 rounded-2xl p-2.5 text-sm text-white focus:outline-none focus:border-white text-center font-mono"
                 />
@@ -1003,6 +1007,34 @@ export const SettingsSidebar = () => {
                 }`}
               >
                 {autoStart && <Check size={12} strokeWidth={3.5} />}
+              </button>
+            </div>
+
+            {/* 12h vs 24h Clock Format Setting */}
+            <div className="flex items-center justify-between pt-2 border-t border-white/10">
+              <div>
+                <label 
+                  className="text-sm font-semibold opacity-80 cursor-pointer block"
+                  onClick={() => setClockIs24h(!clockIs24h)}
+                >
+                  24-Hour Clock Format
+                </label>
+                <p className="text-[10px] opacity-50">
+                  {clockIs24h ? 'Military time (e.g. 14:00)' : '12-Hour time (e.g. 02:00)'}
+                </p>
+              </div>
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={clockIs24h}
+                onClick={() => setClockIs24h(!clockIs24h)}
+                className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+                  clockIs24h
+                    ? 'bg-white border-white text-black shadow-sm'
+                    : 'bg-white/5 border-white/20 hover:border-white/40'
+                }`}
+              >
+                {clockIs24h && <Check size={12} strokeWidth={3.5} />}
               </button>
             </div>
 

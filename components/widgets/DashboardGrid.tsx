@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePreferencesStore } from '@/store/usePreferencesStore';
 import { TimerWidget } from './TimerWidget';
+import { ClockWidget } from './ClockWidget';
 import { ControlsWidget } from './ControlsWidget';
 import { QuotesWidget } from './QuotesWidget';
 import { FocusBreakWidget } from './FocusBreakWidget';
@@ -127,6 +128,17 @@ export const DashboardGrid = () => {
             <TimerWidget />
           </div>
         );
+      case 'clock':
+        return (
+          <div
+            style={{
+              zoom: effectiveTimerScale !== 1 ? effectiveTimerScale : undefined,
+            }}
+            className="w-full flex items-center justify-center"
+          >
+            <ClockWidget />
+          </div>
+        );
       case 'controls':
         return (
           <div className="w-full flex items-center justify-center">
@@ -188,7 +200,7 @@ export const DashboardGrid = () => {
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                 className={`w-full flex items-center justify-center transition-opacity duration-700 ${
-                  isFullscreen && isInactive && widgetId !== 'timer'
+                  isFullscreen && isInactive && widgetId !== 'timer' && widgetId !== 'clock'
                     ? 'opacity-0 pointer-events-none'
                     : 'opacity-100'
                 }`}

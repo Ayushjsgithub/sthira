@@ -4,9 +4,16 @@ import React from 'react';
 import { TodoPill } from './TodoPill';
 import { PomodoroGoalTracker } from './PomodoroGoalTracker';
 import { useFullscreenInactivityStore } from '@/hooks/useFullscreenInactivity';
+import { usePreferencesStore } from '@/store/usePreferencesStore';
 
 export const BottomLeftHud = () => {
   const { isFullscreen, isInactive } = useFullscreenInactivityStore();
+  const activeWidgets = usePreferencesStore((state) => state.activeWidgets);
+  const isClockActive = activeWidgets.includes('clock');
+
+  if (isClockActive) {
+    return null;
+  }
 
   return (
     <div
